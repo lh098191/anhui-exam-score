@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安徽中考查询</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+        h1 {
+            color: #2c5282;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1a4a80;
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #edf2f7;
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            background-color: white;
+        }
+        .score-label {
+            font-weight: bold;
+            color: #4a5568;
+        }
+        .score-value {
+            color: #2b6cb0;
+            font-weight: bold;
+        }
+        .rank-box {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: #edf2f7;
+        }
+        .rank-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c5282;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .rank-content {
+            text-align: center;
+            font-size: 14px;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>安徽中考成绩查询</h1>
+        <div class="form-group">
+            <label for="name">姓名</label>
+            <input type="text" id="name" placeholder="请输入你的姓名">
+        </div>
+        <div class="form-group">
+            <label for="examNum">准考证号</label>
+            <input type="text" id="examNum" placeholder="请输入你的准考证号">
+        </div>
+        <button id="queryBtn">确定查询</button>
+        
+        <div id="resultBox" class="result-box" style="display: none;">
+            <div class="result-title">你的中考成绩</div>
+            <div id="scores" class="scores">
+                <!-- 成绩将在这里显示 -->
+            </div>
+            <div class="rank-box">
+                <div class="rank-title">成绩排名</div>
+                <div class="rank-content" id="rankContent">
+                    <!-- 排名将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('queryBtn').addEventListener('click', function() {
+            const name = document.getElementById('name').value;
+            const examNum = document.getElementById('examNum').value;
+            
+            if (!name || !examNum) {
+                alert('请输入姓名和准考证号');
+                return;
+            }
+            
+            // 生成随机成绩
+            const bioScore = Math.floor(Math.random() * 25) + 10; // 10-34
+            const geoScore = Math.floor(Math.random() * 26) + 10; // 10-35
+            const bioExpScore = 10; // 固定10分
+            const itScore = Math.floor(Math.random() * 21) + 10; // 10-30
+            
+            // 计算总分
+            const totalScore = bioScore + geoScore + bioExpScore + itScore;
+            
+            // 生成较真实的排名（根据总分模拟排名）
+            let rank = '';
+            if (totalScore >= 90) {
+                rank = '恭喜！你的成绩非常优秀，预估排名在全省前5%左右。';
+            } else if (totalScore >= 80) {
+                rank = '你的成绩优秀，预估排名在全省前15%左右。';
+            } else if (totalScore >= 70) {
+                rank = '你的成绩良好，预估排名在全省前30%左右。';
+            } else if (totalScore >= 60) {
+                rank = '你的成绩中等，预估排名在全省前50%左右。';
+            } else {
+                rank = '你的成绩需要继续努力，预估排名在全省50%以后，加油！';
+            }
+            
+            // 显示成绩
+            const scoresDiv = document.getElementById('scores');
+            scoresDiv.innerHTML = `
+                <div class="score-item">
+                    <div class="score-label">生物成绩</div>
+                    <div class="score-value">${bioScore}分</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">地理成绩</div>
+                    <div class="score-value">${geoScore}分</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">生物实验成绩</div>
+                    <div class="score-value">${bioExpScore}分</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">信息技术成绩</div>
+                    <div class="score-value">${itScore}分</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">总分</div>
+                    <div class="score-value">${totalScore}分</div>
+                </div>
+            `;
+            
+            // 显示排名
+            document.getElementById('rankContent').textContent = rank;
+            
+            // 显示结果框
+            document.getElementById('resultBox').style.display = 'block';
+            
+            // 滚动到结果框
+            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
